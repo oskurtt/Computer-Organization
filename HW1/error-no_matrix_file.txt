@@ -1,0 +1,2 @@
+Please enter the matrix A data file name: nofile
+mm_read: failed to open file.

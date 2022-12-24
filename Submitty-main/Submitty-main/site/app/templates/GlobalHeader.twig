@@ -1,0 +1,328 @@
+{% import _self as self %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ page_title }}</title>
+    <link rel="shortcut icon" href="{{ base_url }}img/favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="{{ manifast_path }}">
+    <script type="module" src="{{ service_worker_path }}"></script>
+    <script>
+        window.baseUrl = "{{ base_url }}";
+        window.courseUrl = "{{ course_url }}";
+        window.csrfToken = "{{ csrf_token }}";
+        window.websocketPort = {{ websocket_port }};
+
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker
+                    .register("{{ service_worker_path }}")
+                    .then(res => console.log("service worker registered"))
+                    .catch(err => console.log("service worker not registered", err))
+            })
+        }
+    </script>
+
+    {% for css_ref in css %}
+    <link rel='stylesheet' type='text/css' href='{{ css_ref }}' />
+    {% endfor %}
+
+    {# TODO, eventually this wont need an if statement and will work on every page #}
+    {% if use_mobile_viewport %}
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    {% endif %}
+
+    {% for js_ref in js %}
+    <script src='{{ js_ref }}'></script>
+    {% endfor %}
+
+    {% if not content_only %}
+    <script>
+        function ducky() {
+            var duck = document.getElementById("duckdiv");
+            var banner = document.getElementById("submitty-banner");
+            banner.style.display = "block";
+            document.getElementById('moorthy-duck').onclick = null;
+            var pos = 5;
+            var id = setInterval(frame, 5);
+            function frame() {
+                if (screen.width - pos <= -350) {
+                    clearInterval(id);
+                    banner.style.display = "none";
+                    duck.style.right = -280 + 'px';
+
+                    resetDriver();
+                }
+                else {
+                  pos++;
+                  duck.style.right = pos + 'px';
+                }
+            }
+        }
+
+        function resetDriver(){
+            var duck = document.getElementById("duckdiv");
+            var pos = -280;
+
+            var id = setInterval(reset, 5);
+
+            // all done! bring the ducky home
+            function reset(){
+                if (duck.style.right === '0px'){
+                    clearInterval(id);
+                    document.getElementById('moorthy-duck').onclick = function(){ducky();}
+                }
+                else {
+                    pos++;
+                    duck.style.right = pos + 'px';
+                }
+            }
+        }
+
+        var onAjaxInit;
+
+
+        //determines if the user has a set theme
+        function detectColorScheme(){
+            document.documentElement.setAttribute("data-theme", "");
+            document.documentElement.setAttribute("data-black_mode", "");
+            let theme="light";    //default to light
+            //local storage is used to override OS theme settings
+            if(localStorage.getItem("theme")){
+                if(localStorage.getItem("theme") === "dark"){
+                    theme = "dark";
+                }
+            } else if(!window.matchMedia) {
+                //matchMedia method not supported
+                return false;
+            } else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                //OS theme setting detected as dark
+                theme = "dark";
+            }
+            //dark theme preferred, set document with a `data-theme` attribute
+            if (theme === "dark") {
+                 document.documentElement.setAttribute("data-theme", "dark");
+                 if(localStorage.getItem("black_mode") === "black"){
+                   document.documentElement.setAttribute("data-black_mode", "black");
+                 }
+            }
+        }
+        detectColorScheme();
+    </script>
+    {% endif %}
+
+</head>
+<body data-base-url="{{ base_url }}" data-course-url="{{ course_url }}" data-csrf-token="{{ csrf_token }}" onload="if (onAjaxInit) { onAjaxInit(); }">
+<a id="skip-nav" class="skip-btn" href="#main">Skip to main content</a>
+    {% if not content_only %}
+        {% if wrapper_urls['top_bar.html'] is defined %}
+            {# uploaded homepage redirect can go here? #}
+            <iframe sandbox="allow-top-navigation-by-user-activation allow-top-navigation" id="top_bar" src="{{ wrapper_urls['top_bar.html'] }}" frameborder="0"></iframe>
+        {% endif %}
+        {% if wrapper_urls['left_sidebar.html'] is defined %}
+            {# uploaded sidebar can go here? #}
+            <iframe sandbox="allow-top-navigation-by-user-activation allow-top-navigation" id="left_sidebar" src="{{ wrapper_urls['left_sidebar.html'] }}" frameborder="0"></iframe>
+        {% endif %}
+        {# separates our content from user custom bars #}
+    {% endif %}
+
+    <div id="submitty-body" class="flex-col">
+        {% if not content_only %}
+            <div id="mobile-menu">
+                <div id="menu-header" class="flex-row">
+                <a href="{{ base_url }}" aria-label="Go to Submitty Home"><span class="mobile-title">Submitty</span></a>
+                    <button id="menu-exit"><span class="screen-reader">Close Menu</span><i class="fas fa-times"></i></button>
+                </div>
+                <ul>
+                    {% set total_notifications = 0 %}
+                    {% for button in sidebar_buttons %}
+                        {% if button.getTitle() != "Collapse Sidebar" %}
+                            {{ self.render_sidebar_button(button, true) }}
+                        {% endif %}
+                        {% if button.getBadge() %}
+                            {% set total_notifications = total_notifications + button.getBadge() %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="menu-overlay"></div>
+            <nav class="flex-row shadow">
+                <div id="nav-links">
+                    <a id="home-button"
+                        class="black-btn"
+                        href="{{ base_url }}"
+                        aria-label="Go to Submitty Home"
+                    >
+                        <img id="submitty-mascot-home-btn"
+                                src="{{ base_url }}/img/{{ duck_img }}"
+                                alt="Moorthy - Submitty's Duck Mascot!"
+                                height="60"
+                            />
+                    </a>
+                    <div id="breadcrumbs">
+                        {% for b in breadcrumbs %}
+                            {% if loop.index0 > 0 %}
+                                <span class="centered-icon">
+                                    <i class="fas fa-angle-right"></i>
+                                </span>
+                            {% endif %}
+                            <div class="breadcrumb">
+                                {% if b.getUrl() is not empty and not loop.last %}
+                                    <a {% if loop.first %}id="desktop_home_link"{% endif %} href='{{ b.getUrl() }}'>{{ b.getTitle() }}</a>
+                                {% elseif b.useAsHeading() %}
+                                    <h1 class="breadcrumb-heading">{{ b.getTitle() }}</h1>
+                                {% else %}
+                                    <span>{{ b.getTitle() }}</span>
+                                {% endif %}
+                                {% if b.getExternalUrl() is not empty %}
+                                    <a class="external-breadcrumb" href="{{ b.getExternalUrl() }}" target="_blank" aria-label="Go to {{ b.getTitle() }}"><i class="fas fa-external-link-alt"></i></a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div style="display: flex">
+                    <span id="duckdiv" style="position: relative">
+                    {% if not enable_banner %}
+                    <a id="duck-desktop"
+                        href="http://submitty.org/developer/rcos_moorthy"
+                        target="_blank"
+                        aria-label="Learn more about Moorthy"
+                    >
+                    {% endif %}
+                        <img id="moorthy-duck"
+                                src="{{ base_url }}/img/{{ duck_img }}"
+                                alt="Moorthy - Submitty's Duck Mascot!"
+                                height="80"
+                                {% if enable_banner %}
+                                class="key_to_click"
+                                onclick="ducky();"
+                                tabindex="0"
+                                {% endif %}
+                        />
+                    {% if not enable_banner %}
+                    </a>
+                    {% endif %}
+
+                    {% if enable_banner %}
+                    <img id="submitty-banner"
+                            src="{{ base_url }}/img/submitty-banner.png"
+                            alt="Happy Submitty Week!"
+                            height="70"
+                            style="position:absolute;right: -380px; top:6px;display:none;"
+                    />
+                    {% endif %}
+                    </span>
+                    <span>
+                        <a class="flex-col" id="logo-box" href="http://submitty.org" target="_blank" aria-label="Visit submitty dot org">
+                            <img id="logo-submitty" src="{{ base_url }}/img/submitty_logo.png" alt="Submitty Logo">
+                            <img id="logo-submitty-light" src="{{ base_url }}/img/submitty_logo_white.png" alt="Submitty Logo">
+                        </a>
+                    </span>
+                </div>
+                {# assuming that if sidebar_buttons only has len 2 it contains logout and collapse (on index page only) #}
+                {% if sidebar_buttons|length > 2 %}
+                    <button id="menu-button" class="black-btn">
+                        MENU
+                        {% if total_notifications %}
+                            <span class="notification-badge">{{  total_notifications }}</span>
+                        {% endif %}
+                    </button>
+                {% elseif sidebar_buttons|length %}
+                    <a id="logout-button" class="black-btn" href="{{ core.buildUrl(['authentication', 'logout']) }}" aria-label="Logout"><i class="fas fa-power-off"></i></a>
+                {% endif %}
+            </nav>
+        {% endif %}
+        <noscript class="system-message danger">
+            You must have JavaScript enabled for Submitty to function properly. Please re-enable it when browsing this site.
+        </noscript>
+        {% if system_message is not null and system_message|length > 0 %}
+            <div class="system-message warning">
+                {{ system_message }}
+            </div>
+        {% endif %}
+        <div class="system-message warning" id="socket-server-system-message" hidden>
+            Warning: Failed to connect to websocket server. This page will not dynamically update.
+            Manually reload this page to see updates.{% if sysadmin_email is not empty %} Notify the
+            sysadmin at <a href='mailto:{{ sysadmin_email }}'>{{ sysadmin_email }}</a>.{% endif %}
+        </div>
+        <div id='messages'>
+            <!-- If the below <div> definition changes, update the design in server.js in displayMessage function -->
+            {% for message in messages %}
+                <div id='{{ message.type }}-{{ message.key }}' class="inner-message alert alert-{{ message.type }}">
+                    <span>
+                        {% if message.type == "error" %}
+                        <i class="fas fa-times-circle"></i>
+                        {% elseif message.type == "success" %}
+                        <i class="fas fa-check-circle"></i>
+                        {% else %}
+                        <i class="fas fa-circle-exclamation"></i>
+                        {% endif %}
+                        {{ message.error | nl2br }}
+                    </span>
+                    <a class="fas fa-times key_to_click" tabindex="0" onClick="removeMessagePopup('{{ message.type }}-{{ message.key }}');"></a>
+                </div>
+            {% endfor %}
+        </div>
+        <div id="wrapper">
+            {% if not content_only and sidebar_buttons|length > 0 %}
+                <aside class="{{collapse_sidebar?'collapsed':''}}">
+                    <ul>
+                        {% for button in sidebar_buttons %}
+                            {{ self.render_sidebar_button(button, false) }}
+                        {% endfor %}
+                    </ul>
+                </aside>
+            {% endif %}
+            <main id="main">
+{# Looks mismatched because this lines up with GlobalFooter.twig #}
+
+{% macro render_sidebar_button(button, mobile) %}
+    {% if button.getTitle() == "" %}
+        <li><hr /></li>
+    {% else %}
+        <li>
+            {% if button.getHref() == null %}
+                <span
+                    class="flex-row {{ button.getClass() }}"
+                    {% if button.getId() != "" %}
+                        id="{{ [mobile ? 'mobile-' : '', button.getId()]|join }}"
+                    {% endif %}
+                >
+                    <span class="flex-line"> {# col in flex-row #}
+                        {% if button.getIcon() != null %}
+                            <i class="fa {{ button.getIcon() }}"></i>
+                        {% endif %}
+
+                        {{ button.getTitle() }}
+                    </span>
+                    {% if button.getBadge() > 0 %}
+                        <span class="notification-badge">{{  button.getBadge() }} </span>
+                    {% endif %}
+                </span>
+            {% else %}
+                <a href="{{ button.getHref() }}"
+                    title="{{ button.getTitle() }}"
+                    class="flex-row {{ button.getClass() }}"
+                    {% if button.getId() != "" %}
+                        id="{{ [mobile ? 'mobile-' : '', button.getId()]|join }}"
+                    {% endif %}
+                    {% if not mobile %}
+                        data-toggle="tooltip"
+                    {% endif %}
+                >
+                    <span class="flex-line"> {# col in flex-row #}
+                        {% if button.getIcon() != null %}
+                            <i class="{{ button.getPrefix() }} {{ button.getIcon() }}"></i>
+                        {% endif %}
+
+                        <span class="icon-title"> {{ button.getTitle() }} </span>
+                    </span>
+                    {% if button.getBadge() > 0 %}
+                        <span class="notification-badge">{{  button.getBadge() }} </span>
+                    {% endif %}
+                </a>
+
+            {% endif %}
+        </li>
+    {% endif %}
+{% endmacro %}

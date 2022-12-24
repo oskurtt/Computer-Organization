@@ -1,0 +1,26 @@
+{{ add_twig_module_js('grading/electronic/AutogradingPanel.js') }}
+<div id="autograding_results" class="rubric_panel" data-highest-version="{{ highest_version }}" data-gradeable-id="{{ gradeable_id }}" data-user-id="{{ user_id }}">
+    <div>
+        <span class="grading_label">Autograding Testcases</span>
+        <button id="autograding-results-open-all" class="btn btn-default key_to_click" tabindex="0">Expand All</button>
+        <button id="autograding-results-close-all" class="btn btn-default key_to_click" tabindex="0">Close All</button>
+        {% if can_regrade %}
+            <div class="btn-group">
+                <button id="autograding-results-regrade-active" type="button" class="btn btn-primary">Regrade Active Version</button>
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                    <button id="autograding-results-regrade-all" class="dropdown-item">Regrade All Versions</button>
+                </div>
+            </div>
+        {% endif %}
+        <div class="inner-container">
+            {% if version_instance is null %}
+                <h4>No Submission</h4>
+            {% else %}
+                {{ render_template('AutoGrading', 'showResults', version_instance, show_hidden_cases, true, ta_grading) }}
+            {% endif %}
+        </div>
+    </div>
+</div>

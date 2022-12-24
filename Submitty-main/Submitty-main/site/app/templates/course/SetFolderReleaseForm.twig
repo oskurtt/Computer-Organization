@@ -1,0 +1,126 @@
+{% extends 'generic/Popup.twig' %}
+{% block popup_id %}set-folder-release-form{% endblock %}
+{% block title %}Set Folder Release{% endblock %}
+{% block body %}
+
+
+
+    <div style="margin: auto; text-align: center;">
+        <label for="date_to_release">
+            <b>Change the release date for all contents in <span id="release_title" data-path="" ></span>: </b>
+            <script>
+                //inserts file path into title show what folder you are editing
+                window.onclick = function() {
+                    var rD = document.getElementById("release_title");
+                    var folderPath =rD.dataset.path;
+                    document.getElementById("release_title").innerHTML = folderPath;
+                }
+            </script>
+        </label>
+    <br/>
+    <br/>
+    <input name="release_date" id="date_to_release" class="date_picker" type="text" size="26" value='9998-01-01 00:00:00' data-fp=" " onChange="getNewDateTime('date_to_release')"/>
+    </div>
+    <script>
+
+        function getNewDateTime(id){
+            var releaseDate = document.getElementById(id);
+            // pass filename to server to record the new date and time of the file to be released
+            var newDateTime = $("#"+id).val();
+            //set the value to the new date and time
+            releaseDate.value = newDateTime;
+        }
+
+        function setChild(id,releaseDate,handleData) {
+            //send the array of folder paths and set the time to the new one
+            changeFolderNewDateTime(id,releaseDate.value,function (output) {
+                if(output){
+                    if(handleData){
+                        handleData(true);
+                    }
+                }
+            });
+        }
+
+        function confirmReleaseDate() {
+            var directory = document.getElementById("submit_time");
+            //var dirArr = JSON.parse(directory.dataset.indir);
+            var id = directory.dataset.id;
+            var ID = directory.dataset.iden;
+
+            var releaseDate = document.getElementById("date_to_release");
+            //makes sure you cannot set to null times
+            if (releaseDate.value == "") {
+                window.alert("No blank time allowed");
+                return;
+            }
+            setChild(id, releaseDate, function (output) {
+                //when done reload
+                if (output) {
+                    var selectedDiv = 'date_to_release_' + ID;
+                    $("[id^=" + selectedDiv + "]").val(releaseDate.value);
+                    //delay so function can finish most of the way
+                    //window.setTimeout('parent.location.reload()',100);
+                    parent.location.reload();
+                }
+            });
+        }
+
+
+        flatpickr("#date_to_release", {
+                    plugins: [ShortcutButtonsPlugin(
+                        {
+                            button: [
+                                {
+                                    label: "Beginning of time"
+                                },
+                                {
+                                    label: "Now"
+                                },
+                                {
+                                    label: "Tomorrow"
+                                },
+                                {
+                                    label: "End of time"
+                                }
+                            ],
+                            onClick: (index, fp) => {
+                                let date;
+                                switch (index) {
+                                    case 0:
+                                        date = new Date("1001-01-01 00:00:00");
+                                        break;
+                                    case 1:
+                                        date = new Date();
+                                        break;
+                                    case 2:
+                                        date = new Date();
+                                        date.setDate(date.getDate() + 1);
+                                        break;
+                                    case 3:
+                                        date = new Date("9998-01-01 00:00:00");
+                                        break;
+                                }
+                                fp.setDate(date);
+                            }
+                        }
+                    )],
+                    allowInput: true,
+                    enableTime: true,
+                    enableSeconds: true,
+                    time_24hr: true,
+                    dateFormat: "Y-m-d H:i:S",
+                    onReady: (a, b, fp) => {
+                      fp.calendarContainer.firstChild.childNodes[1].firstChild.firstChild.setAttribute('aria-label', 'Month');
+                      fp.calendarContainer.childNodes[2].childNodes[4].firstChild.setAttribute('aria-label', 'Seconds');
+                    }
+                    });
+    </script>
+
+{% endblock %}
+
+{% block buttons %}
+    {{ block('close_button') }}
+    <input name="submit" class="btn btn-primary key_to_click" tabindex="0" id="submit_time" type="submit" value="Submit" data-iden=" " data-inDir=' ' onclick="confirmReleaseDate()"/>
+
+{% endblock %}

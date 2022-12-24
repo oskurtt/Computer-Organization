@@ -1,0 +1,121 @@
+{% if incentive_message is defined %}
+    <div class="sub" id="incentive_message" style="display: none;">
+        <p class='green-message'>{{ incentive_message }}</p>
+    </div>
+{% endif %}
+
+{# Submitted files #}
+{% if hide_submitted_files == false %}
+    <h4>Submitted Files</h4>
+    <div class="row">
+        <div class="box col-md-6" id="submitted-files">
+            {% for file in files %}
+                <div class="flex-row">
+                    <span>
+                        {{ file.relative_name }} ({{ (file.size / 1024) | number_format(2) | default(-1) }}kb)
+                    </span>
+                {# download icon if student can download files #}
+                {% if can_download %}
+                    <button class = 'btn btn-primary key_to_click' onclick='downloadFile("{{ file.path|url_encode }}", "submissions")' aria-label="Download {{file.relative_name}}"> Download
+                        <i class="fas fa-download" title="Download the file"></i></button>
+                {% endif %}
+                 </div>
+            {% endfor %}
+            {% if can_download and files|length > 1 %}
+                <br />
+                <div class="flex-row">
+                    <span>Download all files:</span>
+                    <a aria-label="Download zip of all files"
+                       onclick='downloadSubmissionZip("{{ gradeable_id }}", "{{ user_id }}", "{{ display_version }}", "submission")'
+                       class="key_to_click"
+                       tabindex="0"
+                    >
+                        <i class="fas fa-download" title="Download zip of all files"></i>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="box col-md-6 submission-details">
+            {% if first_access_time is defined and first_access_time is not null and first_access_time is not empty %}
+                <span class="flex-row">
+                    <span>First access timestamp:</span>
+                    <span>{{ first_access_time|date(date_time_format) }}</span>
+                </span>
+            {% endif %}
+            <span class="flex-row">
+                <span>Submission timestamp:</span>
+                <span id="submission_timestamp"> {{ submission_time|date(date_time_format) }}</span>
+            </span>
+            <span class="flex-row">
+                <span>Days late: </span>
+                <span>{{ days_late }} (before extensions)</span>
+            </span>
+            {% if results is defined %}
+                <span class="flex-row">
+                    <span>Grading time:</span>
+                    <span>{{ grade_time }} seconds</span>
+                </span>
+                <span class="flex-row">
+                    {% if autograder_machine is null %}
+                       {# unknown machine -- backwards compatible #}
+                    {% elseif autograder_machine == '(short-circuited)' %}
+                       {# short-circuited -- simple grading w/o worker machine #}
+                    {% else %}
+                       <span>Graded on machine:</span><span>{{ autograder_machine }}</span>
+                    {% endif %}
+                </span>
+                {% if num_autogrades == 1 %}
+                    <span class="flex-row">
+                        <span>Queue wait time:</span>
+                        <span>{{ wait_time }} seconds</span>
+                    </span>
+                {% endif %}
+                {% if access_duration > 3600 %}
+                    <span class="flex-row">
+                        <span>Gradeable access duration: </span>
+                        <span>{{ access_duration // 3600 }} hours {{ (access_duration // 60) % 60 }} minutes {{ access_duration % 60 }} seconds</span>
+                    </span>
+                {% elseif access_duration > 60 %}
+                    <span class="flex-row">
+                        <span>Gradeable access duration: </span>
+                        <span>{{ (access_duration // 60) }} minutes {{ access_duration % 60 }} seconds</span>
+                    </span>
+                {% elseif access_duration > 0 %}
+                    <span class="flex-row">
+                        <span>Gradeable access duration: </span>
+                        <span>{{ access_duration % 60 }} seconds</span>
+                    </span>
+                {% endif %}
+                {% if num_autogrades > 1 %}
+                    <span class="flex-row">
+                        <span>Number of re-autogrades:</span>
+                        <span>{{ num_autogrades - 1 }}</span>
+                    </span>
+                    <span class="flex-row">
+                        <span>Last re-autograde finished: </span>
+                        <span>{{ grading_finished|date(date_time_format) }}</span>
+                    </span>
+                {% endif %}
+                {% if is_vcs %}
+                    <span class="flex-row">
+                        <span>Git commit hash:</span>
+                        <span>
+                            {% if revision %}
+                                {{ revision[0:7] }}
+                            {% else %}
+                                None
+                            {% endif %}
+                        </span>
+                    </span>
+                    <br />
+                {% endif %}
+            {% else %}
+                Grading not complete
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    {# Keep the Submission date to let Confetti parse the date #}
+    <span hidden id="submission_timestamp"> Submission timestamp: {{ submission_time|date(date_time_format) }}</span> <br />
+{% endif %}
+{# /Submitted files #}

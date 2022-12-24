@@ -1,0 +1,138 @@
+<div id="message"></div>
+<div class="content">
+    <div class="column-wrapper" style="margin: 1em 0;">
+        <h1 style="margin:0px;">Late Days Allowed</h1>
+
+        <div id="rebuild-status-panel" style="left:0px;display:none">
+            <span id="rebuild-status-label">Build Status: </span>
+            <div id="rebuild-status"></div>
+        </div>
+
+        <div class="column-wrapper">
+            <a class="btn btn-primary"
+                href="{{ late_days_forensics_url }}"style="float: right">
+                Late Days Forensics
+            </a>
+            </form>
+        </div>
+    </div>
+
+    <form id="late-day-form" class="exception-form" method="post" enctype="multipart/form-data" onsubmit="return updateLateDays($(this));">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+        <p>
+            The default number of late days available to each student at the start of term is configured on the Course
+            Settings page and is currently set to: {{ initial_late_days }}
+        </p>
+        <br>
+        <p>
+            Use this form to set the total number of late days for a student.<br>
+            Students may use these late days for any future homeworks (after the specified date).
+        </p>
+        <fieldset class="single-student">
+            <legend class="option-title">Single Student Entry</legend>
+            <label for="user_id">
+                Student ID:
+                <input class="option-input" type="text" name="user_id" id="user_id">
+            </label>
+            <label for="datestamp">
+                Date to be Applied:
+                <input class="option-input" type="text" name="datestamp" id="datestamp">
+            </label>
+            <label for="late_days">
+                Total Late Days:
+                <input class="option-input" type="number" name="late_days" id="late_days">
+            </label>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>
+                <span class="option-title" id="csv_upload_title">Multiple Student Entry Via CSV Upload</span>
+                <br>
+                <span id="csv_upload_format">Do not use column headers. CSV must be of the following form: student_id, MM-DD-YYYY, late_days</span>
+            </legend>
+            <label for="csv_option_overwrite_all">
+                <input type="radio" name="csv_option" id="csv_option_overwrite_all" value="csv_option_overwrite_all" checked>
+                Upload overwrites&nbsp;<em>all</em>&nbsp;values
+            </label>
+            <label for="csv_option_preserve_higher">
+                <input type="radio" name="csv_option" id="csv_option_preserve_higher" value="csv_option_preserve_higher">
+                Do not overwrite higher values
+            </label>
+            <input type="file" name="csv_upload" id="csv_upload" aria-labelledby="csv_upload_title csv_upload_format" onchange="return updateLateDays($(this));">
+        </fieldset>
+    </form>
+    {# This is a data table #}
+    {% if not users or (users|length < 1) %}
+        <p id="empty-table" class="warning">No late days are currently entered</p>
+    {% else %}
+        <table id="late-day-table" class="table table-striped mobile-table">
+            <caption>Late Days Allowed</caption>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Total Allowed Late Days</th>
+                    <th>Effective Date</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td data-before-content="Student ID" class="align-left">{{ user.getId() }}</td>
+                        <td data-before-content="First Name" class="align-left">{{ user.getDisplayedFirstName() }}</td>
+                        <td data-before-content="Last Name" class="align-left">{{ user.getDisplayedLastName() }}</td>
+                        <td data-before-content="Total Allowed Late Days">{{ user.getAllowedLateDays() }}</td>
+                        <td data-before-content="Effective Date">{{ user.getSinceTimestamp() }}</td>
+                        <td data-before-content="Delete">
+                            <a
+                                aria-label='Delete late days for {{ user.getId() }} on {{ user.getSinceTimestamp() }}'
+                                href="javascript:deleteLateDays('{{ user.getId() }}', '{{ user.getSinceTimestamp() }}');"
+                            >
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<script>
+    $("#user_id").autocomplete({
+        source: {{ student_full|raw }}
+    });
+
+    flatpickr("#datestamp", {
+        plugins: [ShortcutButtonsPlugin(
+            {
+                button: [
+                    {
+                        label: "Now"
+                    }
+                ],
+                onClick: (index, fp) => {
+                    let date;
+                    switch (index) {
+                        case 0:
+                            date = new Date();
+                            break;
+                    }
+                    fp.setDate(date);
+                }
+            }
+        )],
+        allowInput: true,
+        enableTime: false,
+        enableSeconds: false,
+        time_24hr: true,
+        dateFormat: "Y-m-d",
+        onReady: (a, b, fp) => {
+            fp.calendarContainer.firstChild.childNodes[1].firstChild.firstChild.setAttribute('aria-label', 'Month');
+            fp.calendarContainer.childNodes[2].childNodes[4].firstChild.setAttribute('aria-label', 'Seconds');
+        }
+    });
+</script>

@@ -1,0 +1,812 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\AutoGradedVersion and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/AbstractController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between non\\-empty\\-string and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/AbstractController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 13
+			path: app/controllers/AuthenticationController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 2
+			path: app/controllers/AuthenticationController.php
+
+		-
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 2
+			path: app/controllers/AuthenticationController.php
+
+		-
+			message: "#^Call to function is_null\\(\\) with app\\\\models\\\\User will always evaluate to false\\.$#"
+			count: 3
+			path: app/controllers/DockerInterfaceController.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: app/controllers/GlobalController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/HomePageController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/HomePageController.php
+
+		-
+			message: "#^Call to function is_null\\(\\) with app\\\\models\\\\User will always evaluate to false\\.$#"
+			count: 4
+			path: app/controllers/HomePageController.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: app/controllers/HomePageController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 3
+			path: app/controllers/MiscController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Gradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/MiscController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 2
+			path: app/controllers/NotificationController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 3
+			path: app/controllers/NotificationController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 2
+			path: app/controllers/NotificationController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/OfficeHoursQueueController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 41
+			path: app/controllers/OfficeHoursQueueController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 5
+			path: app/controllers/OfficeHoursQueueController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 25
+			path: app/controllers/PollController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 5
+			path: app/controllers/PollController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/UserProfileController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Gradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/admin/AdminGradeableController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 2
+			path: app/controllers/admin/AutogradingConfigController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 2
+			path: app/controllers/admin/AutogradingConfigController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/admin/AutogradingConfigController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 9
+			path: app/controllers/admin/ConfigurationController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 18
+			path: app/controllers/admin/LateController.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: app/controllers/admin/LateController.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 2
+			path: app/controllers/admin/PlagiarismController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between mixed and '' will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/admin/PlagiarismController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/admin/ReportController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 2
+			path: app/controllers/admin/UsersController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/admin/UsersController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 7
+			path: app/controllers/admin/WrapperController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 3
+			path: app/controllers/admin/WrapperController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array\\<int, app\\\\entities\\\\course\\\\CourseMaterial\\> and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/course/CourseMaterialsController.php
+
+		-
+			message: "#^Elseif condition is always true\\.$#"
+			count: 1
+			path: app/controllers/grading/ElectronicGraderController.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: app/controllers/grading/ElectronicGraderController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Gradeable and false will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/grading/ElectronicGraderController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between bool and 'true' will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/grading/ElectronicGraderController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 11
+			path: app/controllers/grading/SimpleGraderController.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 4
+			path: app/controllers/grading/SimpleGraderController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 4
+			path: app/controllers/grading/SimpleGraderController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Gradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/grading/SimpleGraderController.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 11
+			path: app/controllers/student/GradeInquiryController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/student/GradeInquiryController.php
+
+		-
+			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			count: 1
+			path: app/controllers/student/SubmissionController.php
+
+		-
+			message: "#^Elseif condition is always true\\.$#"
+			count: 1
+			path: app/controllers/student/SubmissionController.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: app/controllers/student/SubmissionController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/controllers/student/SubmissionController.php
+
+		-
+			message: """
+				#^Call to deprecated method webOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return WebResponse directly$#
+			"""
+			count: 1
+			path: app/controllers/superuser/SuperuserEmailController.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$body is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$course is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$created is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$email_address is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$error is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$id is unused\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$semester is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$sent is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$subject is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Property app\\\\entities\\\\email\\\\EmailEntity\\:\\:\\$user_id is never written, only read\\.$#"
+			count: 1
+			path: app/entities/email/EmailEntity.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: app/libraries/Access.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Gradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/libraries/Access.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 2
+			path: app/libraries/Access.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 2
+			path: app/libraries/Core.php
+
+		-
+			message: "#^Property app\\\\libraries\\\\Core\\:\\:\\$user_id is never read, only written\\.$#"
+			count: 1
+			path: app/libraries/Core.php
+
+		-
+			message: "#^Unsafe access to private property app\\\\libraries\\\\DateUtils\\:\\:\\$timezone through static\\:\\:\\.$#"
+			count: 3
+			path: app/libraries/DateUtils.php
+
+		-
+			message: "#^Property app\\\\libraries\\\\DiffViewer\\:\\:\\$has_difference is never read, only written\\.$#"
+			count: 1
+			path: app/libraries/DiffViewer.php
+
+		-
+			message: "#^Unsafe access to private property app\\\\libraries\\\\ExceptionHandler\\:\\:\\$display_exceptions through static\\:\\:\\.$#"
+			count: 2
+			path: app/libraries/ExceptionHandler.php
+
+		-
+			message: "#^Unsafe access to private property app\\\\libraries\\\\ExceptionHandler\\:\\:\\$log_exceptions through static\\:\\:\\.$#"
+			count: 2
+			path: app/libraries/ExceptionHandler.php
+
+		-
+			message: "#^Unsafe call to private method app\\\\libraries\\\\ExceptionHandler\\:\\:parseArgs\\(\\) through static\\:\\:\\.$#"
+			count: 1
+			path: app/libraries/ExceptionHandler.php
+
+		-
+			message: "#^Property app\\\\libraries\\\\GradingQueue\\:\\:\\$grading_remaining is never read, only written\\.$#"
+			count: 1
+			path: app/libraries/GradingQueue.php
+
+		-
+			message: "#^Unsafe access to private property app\\\\libraries\\\\Logger\\:\\:\\$log_path through static\\:\\:\\.$#"
+			count: 5
+			path: app/libraries/Logger.php
+
+		-
+			message: "#^Unsafe call to private method app\\\\libraries\\\\Logger\\:\\:getFilename\\(\\) through static\\:\\:\\.$#"
+			count: 2
+			path: app/libraries/Logger.php
+
+		-
+			message: "#^Unsafe call to private method app\\\\libraries\\\\Logger\\:\\:getTimestamp\\(\\) through static\\:\\:\\.$#"
+			count: 2
+			path: app/libraries/Logger.php
+
+		-
+			message: "#^Unsafe call to private method app\\\\libraries\\\\Logger\\:\\:logMessage\\(\\) through static\\:\\:\\.$#"
+			count: 3
+			path: app/libraries/Logger.php
+
+		-
+			message: "#^Comparison operation \"\\>\" between int\\<1, max\\> and 0 is always true\\.$#"
+			count: 1
+			path: app/libraries/database/AbstractDatabase.php
+
+		-
+			message: "#^Call to function is_null\\(\\) with DateTime will always evaluate to false\\.$#"
+			count: 2
+			path: app/libraries/database/DatabaseQueries.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: app/libraries/database/DatabaseQueries.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array\\<int\\> and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/libraries/database/DatabaseQueries.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: app/libraries/database/QueryIdentifier.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: app/libraries/database/QueryIdentifier.php
+
+		-
+			message: "#^PHPDoc tag @var for constant app\\\\libraries\\\\plagiarism\\\\PlagiarismUtils\\:\\:SUPPORTED_LANGUAGES with type int is incompatible with value array\\{plaintext\\: array\\{hash_size\\: 14\\}, python\\: array\\{hash_size\\: 14\\}, java\\: array\\{hash_size\\: 14\\}, cpp\\: array\\{hash_size\\: 14\\}, mips\\: array\\{hash_size\\: 5\\}\\}\\.$#"
+			count: 1
+			path: app/libraries/plagiarism/PlagiarismUtils.php
+
+		-
+			message: """
+				#^Call to deprecated method JsonOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return JsonResponse directly$#
+			"""
+			count: 3
+			path: app/libraries/routers/WebRouter.php
+
+		-
+			message: """
+				#^Call to deprecated method RedirectOnlyResponse\\(\\) of class app\\\\libraries\\\\response\\\\MultiResponse\\:
+				should not be used, just return RedirectResponse directly$#
+			"""
+			count: 7
+			path: app/libraries/routers/WebRouter.php
+
+		-
+			message: "#^Instanceof between bool and app\\\\libraries\\\\response\\\\WebResponse will always evaluate to false\\.$#"
+			count: 2
+			path: app/libraries/routers/WebRouter.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 1
+			path: app/libraries/routers/WebRouter.php
+
+		-
+			message: "#^Call to function is_subclass_of\\(\\) with object and 'app\\\\\\\\Models…' will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/AbstractModel.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: app/models/Config.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\User and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/Config.php
+
+		-
+			message: "#^Call to function is_null\\(\\) with array\\<string\\> will always evaluate to false\\.$#"
+			count: 2
+			path: app/models/GradingOrder.php
+
+		-
+			message: "#^Call to function is_null\\(\\) with array will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/RainbowCustomization.php
+
+		-
+			message: "#^Property app\\\\models\\\\RainbowCustomization\\:\\:\\$sections is never read, only written\\.$#"
+			count: 1
+			path: app/models/RainbowCustomization.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedGradeable.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\AutoGradedVersion and null will always evaluate to false\\.$#"
+			count: 6
+			path: app/models/gradeable/AutoGradedGradeable.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\GradedGradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedGradeable.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\AutogradingTestcase and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedTestcase.php
+
+		-
+			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersion.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\GradedGradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersion.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between bool and 'true' will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersion.php
+
+		-
+			message: "#^Method app\\\\models\\\\gradeable\\\\AutoGradedVersionHistory\\:\\:setBatchRegrade\\(\\) is unused\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersionHistory.php
+
+		-
+			message: "#^Method app\\\\models\\\\gradeable\\\\AutoGradedVersionHistory\\:\\:setGradeTime\\(\\) is unused\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersionHistory.php
+
+		-
+			message: "#^Method app\\\\models\\\\gradeable\\\\AutoGradedVersionHistory\\:\\:setGradingBegan\\(\\) is unused\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersionHistory.php
+
+		-
+			message: "#^Method app\\\\models\\\\gradeable\\\\AutoGradedVersionHistory\\:\\:setGradingFinished\\(\\) is unused\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersionHistory.php
+
+		-
+			message: "#^Method app\\\\models\\\\gradeable\\\\AutoGradedVersionHistory\\:\\:setQueueTime\\(\\) is unused\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersionHistory.php
+
+		-
+			message: "#^Method app\\\\models\\\\gradeable\\\\AutoGradedVersionHistory\\:\\:setVcsRevision\\(\\) is unused\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersionHistory.php
+
+		-
+			message: "#^Method app\\\\models\\\\gradeable\\\\AutoGradedVersionHistory\\:\\:setWaitTime\\(\\) is unused\\.$#"
+			count: 1
+			path: app/models/gradeable/AutoGradedVersionHistory.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/AutogradingConfig.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: app/models/gradeable/Component.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Gradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/Component.php
+
+		-
+			message: "#^Call to function is_null\\(\\) with app\\\\models\\\\User will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/Gradeable.php
+
+		-
+			message: "#^Result of && is always true\\.$#"
+			count: 1
+			path: app/models/gradeable/Gradeable.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between DateTime\\|string and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/GradedComponent.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Component and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/GradedComponent.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\TaGradedGradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/GradedComponent.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between string and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/GradedComponent.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Gradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/GradedGradeable.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Submitter and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/GradedGradeable.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: app/models/gradeable/Mark.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\Component and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/Mark.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: app/models/gradeable/Submitter.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\Team\\|app\\\\models\\\\User and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/Submitter.php
+
+		-
+			message: "#^Result of \\|\\| is always true\\.$#"
+			count: 1
+			path: app/models/gradeable/TaGradedGradeable.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between DateTime\\|string and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/TaGradedGradeable.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\GradedGradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/models/gradeable/TaGradedGradeable.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 2
+			path: app/views/AutoGradingView.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\User and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/views/GlobalView.php
+
+		-
+			message: "#^Ternary operator condition is always true\\.$#"
+			count: 1
+			path: app/views/GlobalView.php
+
+		-
+			message: "#^Method app\\\\views\\\\NavigationView\\:\\:getDeleteButton\\(\\) never returns null so it can be removed from the return type\\.$#"
+			count: 1
+			path: app/views/NavigationView.php
+
+		-
+			message: "#^Method app\\\\views\\\\NavigationView\\:\\:getEditButton\\(\\) never returns null so it can be removed from the return type\\.$#"
+			count: 1
+			path: app/views/NavigationView.php
+
+		-
+			message: "#^Method app\\\\views\\\\NavigationView\\:\\:getGradeButton\\(\\) never returns null so it can be removed from the return type\\.$#"
+			count: 1
+			path: app/views/NavigationView.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between float and 0 will always evaluate to false\\.$#"
+			count: 1
+			path: app/views/NavigationView.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between float and 1 will always evaluate to false\\.$#"
+			count: 1
+			path: app/views/NavigationView.php
+
+		-
+			message: "#^Call to function is_array\\(\\) with app\\\\entities\\\\course\\\\CourseMaterial will always evaluate to false\\.$#"
+			count: 1
+			path: app/views/course/CourseMaterialsView.php
+
+		-
+			message: "#^Expression \"\\$category_colors\" on a separate line does not do anything\\.$#"
+			count: 2
+			path: app/views/forum/ForumThreadView.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: app/views/forum/ForumThreadView.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between bool and 'false' will always evaluate to false\\.$#"
+			count: 1
+			path: app/views/forum/ForumThreadView.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: app/views/grading/ElectronicGraderView.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between int and null will always evaluate to false\\.$#"
+			count: 2
+			path: app/views/grading/ElectronicGraderView.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between app\\\\models\\\\gradeable\\\\GradedGradeable and null will always evaluate to false\\.$#"
+			count: 1
+			path: app/views/submission/HomeworkView.php
+
+		-
+			message: """
+				#^Call to deprecated method registerLoader\\(\\) of class Doctrine\\\\Common\\\\Annotations\\\\AnnotationRegistry\\:
+				This method is deprecated and will be removed in
+				            doctrine/annotations 2\\.0\\. Annotations will be autoloaded in 2\\.0\\.$#
+			"""
+			count: 1
+			path: public/index.php
+

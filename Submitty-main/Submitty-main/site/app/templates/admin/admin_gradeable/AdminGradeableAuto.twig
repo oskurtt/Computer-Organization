@@ -1,0 +1,328 @@
+<div class="electronic_file">
+
+    <div class="option-title">
+        What are students allowed to do?
+    </div>
+    <div>
+        <fieldset>
+            <legend>View the gradeable on the course home page and download submitted files?</legend>
+            <input type="radio" id="no_student_view_after_grades" name="student_view_after_grades" value="false"
+                    {{ gradeable.isStudentView() and not gradeable.isStudentViewAfterGrades() ? 'checked' : '' }}/> <label for="no_student_view_after_grades">Yes</label>
+            <input type="radio" id="no_student_view" name="student_view" value="false"
+                    {{ not gradeable.isStudentView() ? 'checked' : '' }}/> <label for="no_student_view">No</label>
+            <input type="radio" id="yes_student_view_after_grades" name="student_view_after_grades" value="true"
+                    {{ gradeable.isStudentView() and gradeable.isStudentViewAfterGrades() ? 'checked' : '' }}/> <label for="yes_student_view_after_grades">When grades are released</label>
+            <div hidden>
+                <input type="radio" id="yes_student_view" name="student_view" value="true"
+                    {{ gradeable.isStudentView() ? 'checked' : '' }} aria-label="student view"/>
+            </div>
+        </fieldset>
+    </div>
+
+    <div id="student_submit_view">
+        <div>
+            <fieldset><legend>Make new submissions and access all prior versions?</legend>
+            <input type="radio" id="yes_student_submit" name="student_submit" value="true"
+                    {{ gradeable.isStudentSubmit() ? 'checked' : '' }}/> <label for="yes_student_submit">Yes</label>
+            <input type="radio" id="no_student_submit" name="student_submit" value="false"
+                    {{ not gradeable.isStudentSubmit() ? 'checked' : '' }}/> <label for="no_student_submit">No</label></fieldset>
+        </div>
+    </div>
+<br><br>
+
+    <div class="option-title">
+        Should this gradeable be locked from students until they satisfactorily complete a prerequisite assignment?
+    </div>
+    <div>
+        <fieldset>
+            <legend>Previous Gradeable:</legend>
+            <div class="option-input col-md-6" style="padding: 0;">
+                <select name="depends_on" id="gradeable-lock">
+                    <option value="">Select prerequisite gradeable (Off)</option>
+                    {% for template in template_list %}
+                        {% if template.g_id != gradeable.getId() %}
+                            <option value="{{ template.g_id }}" {% if template.g_id == gradeable.getDependsOn() %} selected {% endif %}>{{ template.g_title }} [ {{ template.g_id }} ]</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+        <fieldset id="gradeable-lock-max-points-field" style="{% if gradeable.getDependsOn() is null %}display: none;{% endif %}">
+            <legend>Autograder Points Required to Unlock:</legend>
+            <input type="number" name="depends_on_points" value="{% if gradeable.getDependsOnPoints() is not null %}{{ gradeable.getDependsOnPoints() }}{% else %}0{% endif %}" id="gradeable-lock-points">
+            <p {% if gradeable.getDependsOn() is null %}hidden{% endif %} id="gradeable-lock-max-points">Out of {{ gradeable_max_points[gradeable.getDependsOn()] }} Maximum Autograding Points</p>
+        </fieldset>
+    </div>
+<br><br>
+
+    <div class="option-title">Choose an autograding configuration:</div>
+            <p> You may specify your <a target=_blank href="https://submitty.org/instructor/assignment_configuration/configuration_path#course-autograding-configuration-directory">
+                "Course Autograding Config Directory"<i style="font-style:normal;" class="fa-question-circle"></i></a>
+                from the Course Settings Page. </p>
+            <p> Manually type the full path to a configuration file, or select from the list below. </p>
+    <p> The dropdown list has all existing configurations that contain the current text. Hit the red X to clear current text.</p>
+    {% for error_message in repository_error_messages %}
+        <div class="config_search_error">({{error_message}})</div>
+    {% endfor %}
+
+        <div class="config_search_error" id="autograding_config_error">
+            {% if not currently_valid_repository %}
+                The current path is not valid, selecting Rebuild Gradeable without changing it will fail.
+            {% endif %}
+        </div>
+
+
+    <div class="settings">
+        <div>
+            <div class="drop-down" id="config-drop-down">
+                <input class="config_search ignore drop-down-box" type="text" id="config_search" placeholder="Search for existing configuration" value="{{ gradeable.getAutogradingConfigPath() }}"
+                    autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="autograding configuration" name="autograding_config_path_displayed">
+                    <div style="margin-left: -45px; position: absolute; display: inline-block; width: auto; transform: translate(0, 25%);">
+                        <a class="fas fa-times key_to_click" id= "clear_search_button" style="margin: 0%;" onclick="clearButtonPress();" tabindex="0"></a>
+                        <a class="fas fa-chevron-down" style="padding: 0;" id= "drop-down-arrow"></a>
+                    </div>
+                </input>
+                <div class="drop-down-options" style="display: none;" id="config-options">
+                    {% for path in all_config_paths %}
+                        <div class="path_autofill_option drop-down-option" data-name="{{path.0}}" data-value="{{path.1}}">{{path.0}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-primary" style="margin-top: 6px" href="{{ upload_config_url }}">Upload a custom autograding configuration</a>
+        <br />
+        
+        {# text box with the path to the current config file, hidden but still used in js #}
+        <input style='width: 83%' id='input-provide-full-path' type="hidden" name='autograding_config_path'
+            value="{{ gradeable.getAutogradingConfigPath() }}" class="required" placeholder="(Required)" {{'disabled'}}/>
+    </div>
+
+    <div class="notebook-builder-info">
+        <div class="option-title">Notebook Builder:</div>
+        <div>
+            <a class="btn btn-primary" href="{{ notebook_builder_url ~ '/new' }}">Start New</a>
+            <span>Start a new configuration with notebook builder.</span>
+        </div>
+        <div class="notebook-builder-edit-button-div">
+            <a class="btn btn-primary" href="{{ notebook_builder_url ~ '/edit' }}">Edit Existing</a>
+            <span>Edit the currently selected configuration with notebook builder.</span>
+        </div>
+    </div>
+
+    <div class="btn-container" id="rebuild-gradeable-button">
+        <a class="btn btn-primary key_to_click" tabindex="0" onclick="ajaxRebuildGradeableButton()">Rebuild Gradeable</a>
+    </div>
+
+    <div id="rebuild-status-panel">
+        <span id="rebuild-status-label">Build Status: </span>
+        <div id="rebuild-status"></div>
+    </div>
+
+    <div id="rebuild-log-button">
+        <input type="button" class="btn btn-default key_to_click" tabindex="0" id="open-build-log" type="button" value="Open Build Log" onclick="showBuildLog()" />
+        <input type="button" class="btn btn-primary key_to_click" tabindex="0" id="close-build-log" type="button" value="Close Build Log" onclick="hideBuildLog()" />
+    </div>
+
+    <div class="log-container" hidden>
+        <div class="option-title">Build log:</div>
+        <pre id="build-log-body"></pre>
+    </div>
+
+    <div class="log-container" hidden>
+        <div class="option-title">CMake output:</div>
+        <pre id="cmake-log-body"></pre>
+    </div>
+
+    <div class="log-container" hidden>
+        <div class="option-title">Make output:</div>
+        <pre id="make-log-body"></pre>
+    </div>
+
+</div>
+
+<script>
+    var gradeable_max_autograder_points = {{ gradeable_max_points|json_encode|raw }}
+
+    function onPdfChange() {
+        if($('#yes_pdf_page').is(':checked')) {
+            // $('#pdf_page').show();
+            // $('.pdf_page_input').show();
+            disableElementChildren('#pdf_page', false);
+            disableElementChildren('.pdf_page_input', $('#yes_pdf_page_student').is(':checked'));
+        }
+        else {
+            // $('#pdf_page').hide();
+            // $('.pdf_page_input').hide();
+            disableElementChildren('#pdf_page', true);
+            disableElementChildren('.pdf_page_input', true);
+        }
+    }
+
+    function getConfigData() {
+        var names = [];
+        var paths = [];
+
+        $(".path_autofill_option").each(function() {
+            names.push($(this).attr("data-name"));
+            paths.push($(this).attr("data-value"));
+        });
+
+        return [names,paths];
+    }
+
+    function onConfigPathChange() {
+        data=getConfigData();
+        let full_path_obj = $('#input-provide-full-path');
+        let current_val = $('#config_search').val();
+
+        // Filters the autograding configs displayed based on the values in the box
+        $(".path_autofill_option").each(function() {
+            if ($(this).attr("data-name").toLowerCase().includes(current_val.toLowerCase()) ||
+                    $(this).attr("data-value").toLowerCase().includes(current_val.toLowerCase())) {
+                $(this).show();
+            }
+            else {
+                $(this).hide();
+            }
+        });
+
+        //if a name is entered change to the path
+
+        let index=-1;
+        for (i=0; i<data[0].length; i++) {
+            if (current_val == data[0][i]) {
+                index = i;
+            }
+        }
+        if (index != -1) {
+            current_val = data[1][index];
+        }
+        full_path_obj.val(current_val);
+        full_path_obj.change();
+
+
+        //if path matches display the name
+        for (i=0; i<data[1].length; i++) {
+            if (full_path_obj.val() == data[1][i]) {
+                $('#config_search').val(data[0][i]);
+
+                // Update visibility of notebook builder edit button
+                const edit_button_div = document.querySelector('.notebook-builder-edit-button-div');
+                const visibility = data[0][i].split(':')[0] !== 'UPLOADED' ? 'hidden' : 'visible';
+                edit_button_div.style.visibility = visibility;
+
+                return;
+            }
+        }
+        $('#config_search').val(full_path_obj.val());
+    }
+
+    function clearButtonPress() {
+        $('#config_search').val('');
+        $('.drop-down-box').trigger("input");
+    }
+
+    function onStudentViewChange() {
+        if($('#yes_student_view').is(':checked')) {
+            //$('#student_submit_download_view').show();
+            disableElementChildren('#student_submit_view', !$('#no_student_view_after_grades').is(':checked'));
+        }
+        else {
+            // $('#student_submit_download_view').hide();
+            disableElementChildren('#student_submit_view', true);
+            let studentSubmit = $('#no_student_submit');
+
+            studentSubmit.prop('checked', true);
+            studentSubmit.change();
+
+            $('input[name=student_view_after_grades]').prop('checked', false);
+        }
+    }
+
+    function onStudentSubmitChange() {
+        let cont = $('#due_date_options_container');
+        let exam = {{ is_exam ? "true": "false" }};
+
+        let no_due_date = $('#has_due_date_no');
+        if($('#yes_student_submit').is(':checked') || exam) {
+            cont.show();
+        }
+        else {
+            no_due_date.prop('checked', true);
+            cont.hide();
+        }
+        no_due_date.change();
+    }
+
+    function dropDownBoxOnClick() {
+        let options = $(this).parent().find(".drop-down-options");
+        if (!$(options).is(":visible")) {
+            $(options).hide();
+        }
+    }
+    
+    function dropDownArrowOnClick() {
+        let options = $(this).parent().parent().find(".drop-down-options");
+        if ($(options).is(":visible")) {
+            $(options).hide();
+        }
+        else {
+            $(options).show();
+        }
+    }
+
+    function dropDownOptionOnClick() {
+        let options = $(this).parent();
+        $(options).hide();
+        let box = $(options).parent().find(".drop-down-box");
+        // set the box's value to the text of the option
+        $(box).val($(this).text());
+        $(box).trigger("focusout");
+    }
+
+    function hideDropDownOptions(){
+        let options = $(".drop-down-options");
+        if ($(options).is(":visible")) {
+            $(options).hide();
+        }
+    }
+
+    $(document).ready(function() {
+
+        // Hide PDF settings if not in use
+        onPdfChange();
+        $('[name="pdf_page"]').change(onPdfChange);
+
+        // Hide PDF pages in Rubric if students assign them
+        $('[name="pdf_page_student"]').change(onPdfChange);
+
+        // Only show the settings if the setting is enabled
+        onStudentViewChange();
+        $('[name="student_view"]').change(onStudentViewChange);
+
+        // Only show the dates if the setting is enabled
+        onStudentSubmitChange();
+        $('[name=student_submit]').change(onStudentSubmitChange);
+
+        // Update the text box when the path config changes
+        onConfigPathChange();
+        $('#config_search').on("focusout", onConfigPathChange);
+
+        $('input[name=student_view_after_grades]').change(function() {
+            let elem = $('#yes_student_view');
+            elem.prop('checked', true);
+            elem.change();
+            let sub = $('#no_student_submit');
+            sub.prop('checked', true);
+            sub.change();
+        });
+
+        $('.drop-down').on("click", function(event){
+            event.stopPropagation();
+        });
+        $(document).on("click", hideDropDownOptions);
+        $('.drop-down-box').on("click", dropDownBoxOnClick);
+        $('#drop-down-arrow').on("click", dropDownArrowOnClick);
+        $('.drop-down-option').on("click",dropDownOptionOnClick);
+    });
+</script>

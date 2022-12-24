@@ -1,0 +1,80 @@
+mm_mult:
+  # save return address and any saved registers on the stack, if necessary
+  sub $sp, $sp, 4
+  sw $ra, 0($sp)
+
+  # set up and call mm_alloc for result matrix
+  move $t0, $a0 # store a0 in temp variable
+  move $t1, $a1 # store a1 in temp variable
+
+  move $a1, $a3 # store a3 in a1
+  jal mm_alloc
+
+  move $a0, $t0 # swap back
+  move $a1, $t1 # swap a1 back with temp variable
+
+  move $t1, $a2  # t1 = matrix 1
+  move $t2, $s5  # t2 = matrix 2
+
+  move $t0, $v0 # t0 = result matrix
+
+
+  
+  # three nested loops for matrix-matrix multiplication
+  move $t3, $zero # t3 = i
+  move $t4, $zero # t4 = j
+  move $t5, $zero # t5 = k
+
+  
+
+  m_loop1: bge $t3, $a0, m_exit #if i >= M1 rows -> exit
+           j m_loop2
+
+  m_loop2: bge $t4, $a3, l2 #if j >= M2 cols -> l2
+           j m_loop3
+
+  m_loop3: bge $t5, $a1, l3   #if k >= M1 cols -> l3
+           
+           lw $t6, 0($t1) # load mat1->data[i][k]
+           lw $t7, 0($t2) # load mat2->data[k][j]
+
+           mul $t8, $t6, $t7 # t8 = mat1->data[i][k] x mat2->data[k][j]
+           lw $t6, 0($t0)    # load whatever is in $t0
+           add $t6, $t6, $t8 # add whatever is in the array with $t8
+           sw $t6, 0($t0)    # store result back into array
+
+           addi $t1, $t1, 4  # increment matrix 1
+           mul $t7, $a3, 4   # M2 Column x 4 to calculate offset
+           add $t2, $t2, $t7 # M2 address + $t7 offset
+
+           addi $t5, $t5, 1  #increment k
+           j m_loop3
+
+
+  l2: addi $t3, $t3, 1 # i += 1
+      move $t4, $zero # j = 0
+      move $t5, $zero # k = 0
+      mul $t7, $a1, 4 # $t7 = M1 col x 4
+      add $t1, $t1, $t7 #M1 address + $t7 offset
+      move $t2, $s5 #reset M2 to original address
+      j m_loop1
+
+  l3: addi $t4, $t4, 1 # j += 1
+      move $t5, $zero # k = 0
+      mul $t7, $a1, 4 
+      sub $t1, $t1, $t7
+      addi $t0, $t0, 4 #increment result array 
+      move $t2, $s5 #reset M2
+      addi $t2, $t2, 4 #next element in M2
+
+      j m_loop2
+
+  m_exit:
+
+  # set return value
+  
+  # restore stack, ra, and any saved registers, if necessary 
+  lw $ra, 0($sp)
+  addi $sp, $sp, 4
+  # return to main
+  jr  $ra
